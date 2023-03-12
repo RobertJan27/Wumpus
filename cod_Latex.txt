@@ -1,0 +1,85 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{Wumpus World}
+\author{Zaharia Robert Jan}
+
+\begin{document}
+\maketitle
+
+
+\section{Introduction}
+\subsection{Context}
+
+In cadrul acestui proiect se doreste implementarea unui Ai pentru jocul ”Wumpus World”. WUmpus World este un joc in care eroul trebuie sa parcurga un labirint pentru a ajunge la aur si a iesi nevatamat. Obstacolele intalnite in acest joc sunt monstrul Wumpus dar si gropile in care eroul nostru poate sa cada.
+
+\subsection{Specificatii}
+Pentru a crea acest interfata grafica acest joc vom folosi un framework realizat in python. Iar pentru realizarea miscarilor de catre agentul nostru vom folosi Prover9.  
+\section{Realizarea programului}
+
+\subsection{Rulare}
+Programul se ruleaza deschizand un terminal in folderul cu programul si ruland "python2 run.py". Apoi se apasa sageata dreapta pentru a derula miscarile agentului. Schimbarea hartii se poate realiza prin modificarea fisierului "run.py" unde se inlocuieste cu fisierul hartii dorite. 
+\subsection{Partea de Python}
+In cadrul programului python se va realiza interfata grafica a jocului si se va asigura desfasurarea acestuia folosind functiile din python pentru a progresa.
+In fisierul "agent.py" agentul trimite informatii catre prover.py si apeleaza funtii din acesta pentru a verifica daca camera este goala. Metoda "make-move" incearca sa gaseasca camerele adiacente pozitiei curente care sunt goala. Daca nu reuseste sa gaseasca nicio camera goala atunci se va intoarce in camerele deja vizitate si va incerca sa gaseasca acolo o camera goala. Iar daca nici aici nu gaseste o camera goala atunci va trage in camera unde se afla wumpus daca ii stie locatia exacta altfel se va opri concluzionand ca nu exista o cale sigura pana la aur.
+\begin{figure}
+\includegraphics[width=1.0\textwidth]{wumpus3.png}
+\caption{\label{fig1:dfs}Make-move}
+\end{figure}
+
+In fisierul "prover.py" se realizeaza modificarea fisierului prover metodele acestuia adaugand atribute in fisierul prover.
+
+
+\subsection{Partea de Prover9}
+In fisierul "wumpus.p9" avem codul verificat de prover 9 caruia ii vom adauga toate informatiile dobandite de-a lungul jocului. Fiecare camera avand coordonate (x,y) . Prima parte a codului verifica existenta wumpus-ului. 
+
+\begin{figure}
+\includegraphics[width=1.0\textwidth]{wumpus1.png}
+\caption{\label{fig2:dfs}Check Wumpus}
+\end{figure}
+
+Primele 4 linii de cod din figura 2 verifica daca exista stench in camera. Urmatoarea linie verifica posibilitatea de a fi un Wumpus in camera verificata. Iar cealalta linie se asigura ca nu exista Wumpus in camera verificand daca lipseste un stench intr-una din camerele vecine.
+
+\begin{figure}
+\includegraphics[width=1.0\textwidth]{wumpus2.png}
+\caption{\label{fig3:dfs}Check Pits}
+\end{figure}
+
+In a doua jumatate a codului verificam daca exista o groapa in camera (figura 3). Urmatoarea linie verifica posibilitatea de a fi o groapa in camera verificata. Iar cealalta linie se asigura ca nu exista o groapa in camera verificand daca lipseste o briza intr-una din camerele vecine. 
+
+
+\section{Testare}
+
+Primul test realizat a fost pe o harta initiala de 3x3 unde agentul a trebuit sa realizeze ca camera de la coordonatele (2,2). In figura 4 se poate observa cum agentul nostru a gasit aurul la coordonatele (3,3). Dupa ce a gasit aurul agentul se intoarca la locatia initiala pe drumul pe care a venit (fig 4). 
+\begin{figure}
+\includegraphics[width=1.0\textwidth]{test1.png}
+\caption{\label{fig4:dfs}Harta initiala}
+\end{figure}
+
+Al doilea test a fost realizat pe o harta initiala de 5x5 unde agentul a reusit sa gaseasca aurul la coordonatele (5,4)(figura 5).
+
+\begin{figure}
+\includegraphics[width=1.0\textwidth]{test2.png}
+\caption{\label{fig5:dfs}Harta 5x5}
+\end{figure}
+
+Mapele pot fi create creand un fisier text unde se vor adauga informatiile regasite in fiecare camere 
+(stench, wumpus,breeze,pit,gold) si coordonatele.
+
+
+Teste ulterioare au dus la erori cand dimensiunea mapei depaseste 5x5. Erorile apar in prover9 in urma adaugarii prea multor atribute. In urma acestor erori programul nu poate distinge camerele sigure de cele cu wumpus sau cu groapa. 
+
+
+\end{document}

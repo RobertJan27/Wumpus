@@ -1,0 +1,43 @@
+assign(max_seconds, 1000).
+set(production).
+set(binary_resolution).
+set(print_gen).
+
+% -------------------------
+formulas(sos).
+end_of_list.
+
+% -------------------------
+formulas(assumptions).
+
+%
+% WUMPUS
+%
+
+chk_wumpus(x,y) & stench(x+1,y) -> stenchr(x+1,y).
+chk_wumpus(x,y) & stench(x,y+1) -> stenchu(x,y+1).
+chk_wumpus(x,y) & stench(x+-1,y) -> stenchl(x+-1,y).
+chk_wumpus(x,y) & stench(x,y+-1) -> stenchd(x,y+-1).
+chk_wumpus(x,y) & (stenchr(x+1,y) | stenchl(x+-1,y) | stenchu(x,y+1) | stenchd(x,y+-1)) -> maybe_wumpus(x,y).
+chk_wumpus(x,y) & (-stench(x+1,y) | -stench(x+-1,y) | -stench(x,y+1) | -stench(x,y+-1)) ->no_wumpus(x,y).
+
+chk_wumpus(x,y) & ( (stench(x+1,y) & stench(x+-1,y)) | (stench(x,y+1) & stench(x,y+-1)) | (stench(x,y+1) & stench(x+-1,y)) | (stench(x,y+-1) & stench(x+-1,y)) | (stench(x,y+-1) & stench(x+1,y)) | (stench(x,y+1) & stench(x+1,y)))->wumpus(x,y).
+
+
+
+breeze(x,y)->maybe_pit(x+1,y).
+breeze(x,y)->maybe_pit(x+-1,y).
+breeze(x,y)->maybe_pit(x,y+1).
+breeze(x,y)->maybe_pit(x,y+-1).
+
+
+chk_pit(x,y) & (-breeze(x+1,y) | -breeze(x+-1,y) | -breeze(x,y+1) | -breeze(x,y+-1)) ->no_pit(x,y).
+chk_pit(x,y) & ( (breeze(x+1,y) & breeze(x+-1,y)) | (breeze(x,y+1) & breeze(x,y+-1)) | (breeze(x,y+1) & breeze(x+-1,y)) | (breeze(x,y+-1) & breeze(x+-1,y)) | (breeze(x,y+-1) & breeze(x+1,y)) | (breeze(x,y+1) & breeze(x+1,y)))->pit(x,y).
+
+end_of_list.
+
+
+
+% -------------------------
+formulas(goals).
+end_of_list.

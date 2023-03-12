@@ -1,0 +1,38 @@
+assign(max_seconds, 1000).
+set(production).
+set(binary_resolution).
+set(print_gen).
+
+% -------------------------
+formulas(sos).
+end_of_list.
+
+% -------------------------
+formulas(usable).
+
+
+%
+%PIT
+%
+
+chk_pit(x,y) & breeze(x+1,y) -> breezer(x+1,y).
+chk_pit(x,y) & breeze(x,y+1) -> breezeu(x,y+1).
+chk_pit(x,y) & breeze(x+-1,y) -> breezel(x+-1,y).
+chk_pit(x,y) & breeze(x,y+-1) -> breezedd(x,y+-1).
+
+%chk_pit(x,y) & -breeze(x+1,y)->notbreezer(x+1,y).
+%chk_pit(x,y) & -breeze(x+-1,y)->notbreezel(x+-1,y).
+%chk_pit(x,y) & -breeze(x,y+1)->notbreezeu(x,y+1).
+%chk_pit(x,y) & -breeze(x,y+-1)->notbreezed(x,y+-1).
+
+chk_pit(x,y) & (breezer(x+1,y) | breezel(x+-1,y) | breezeu(x,y+1) | breezedd(x,y+-1)) -> maybe_pit(x,y).
+chk_pit(x,y) & (notbreezer(x+1,y) | notbreezel(x+-1,y) | notbreezeu(x,y+1) | notbreezed(x,y+-1)) ->not_pit(x,y).
+
+
+end_of_list.
+
+
+
+% -------------------------
+formulas(goals).
+end_of_list.
